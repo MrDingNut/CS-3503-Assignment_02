@@ -9,6 +9,13 @@
 
 // Function #1
 void oct_to_bin(const char *oct, char *out) {
+    // Handle edge case
+    if (strcmp(oct, "0") == 0) {
+        out[0] = '0';
+        out[1] = '\0';
+        return;
+    }
+
     const char* octLookup[] = {"000", "001", "010", "011", "100", "101", "110", "111"}; // Lookup table to convert octal digit directly to binary
     int digit;      // Will store octal digit converted to base 10. Digit will be used to index octLookup
     out[0] = '\0';  // Set the first character of the output to the null operator. Allows strcat to acknowledge out as a string
@@ -71,15 +78,17 @@ void oct_to_hex(const char *oct, char *out) {
     int buff = len % 4;         // The number of '0' to prepend to bin to make the length of min a multiple of 4
 
     // Prepend the necessary number of '0's to bin
-    for (int i = 0; i < buff; i++) {
+    for (int i = 0; i < (4-buff); i++) {
         prepend_char(bin, '0');
     }
 
     len = (int)strlen(bin); // Find the new length of bin
 
-    out[0] = '\0';
-    char nibble[5];
-    int idx; // Index of the current char
+    out[0] = '\0';  // Terminate the start of the output string to allow for proper appending
+    char nibble[5]; // String to store nibble
+    int idx;        // Starting index of the current char
+
+    // Loop through each nibble in bin
     for (int i = 0; i < (len/4); i++) {
         idx = i*4;
         nibble[0] = bin[idx+0];
@@ -88,6 +97,7 @@ void oct_to_hex(const char *oct, char *out) {
         nibble[3] = bin[idx+3];
         nibble[4] = '\0';
 
+        // Convert nibble to hexadecimal digit and append it to the output
         char c = bin4_lookup(nibble);
         append_char(out, c);
     }

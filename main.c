@@ -14,7 +14,7 @@ int main(void) {
     void oct_to_bin(const char *oct, char *out);
     void oct_to_hex(const char *oct, char *out);
 
-    char octIn[] = "57\0";
+    char octIn[] = "156\0";
 
     char binOut[256];
     char hexOut[256];
