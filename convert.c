@@ -136,17 +136,18 @@ void hex_to_bin(const char *hex, char *out) {
 
 // Function #4.5
 void to_32bit_binary(uint32_t num, char *out) {
-    for (int i = 31; i >= 0; i--) {
+    for (int i = 31; i >= 0; i--) { // Convert to 32 bit binary
         out[31-i] = ((num >> i) & 1) ? '1' : '0';
     }
-    out[32] = '\0';
+
+    out[32] = '\0'; // Null terminate the string
 }
 
 // Function #4
 void to_sign_magnitude(int32_t num, char *out) {
-    if (num >= 0) {
+    if (num >= 0) { // If num is positive, convert to binary normally
         to_32bit_binary(num, out);
-    } else {
+    } else { // If num is negative, make positive then convert to binary normally
         to_32bit_binary(abs(num), out);
         out[0] = '1';
     }
@@ -158,17 +159,36 @@ void to_ones_complement(int32_t num, char *out) {
         for (int i = 31; i >= 0; i--) {
             out[31-i] = ((num >> i) & 1) ? '1' : '0';
         }
-    } else { // If num is negative, convert to inverted binary
+    } else { // If num is negative, make positive then convert to inverted binary
         int32_t absNum = abs(num);
         for (int i = 31; i >= 0; i--) {
             out[31-i] = ((absNum >> i) & 1) ? '0' : '1';
         }
     }
 
-    out[32] = '\0';
+    out[32] = '\0'; // Null terminate the string
+}
+
+// Function #6.5 Adds 1 to a 32bit binary number represented as a string
+void add1_32bit_binary (char *num) {
+        if (num[31] == '0') { // If the LSB is 0, make it a 1
+        num[31] = '1';
+    } else { // Otherwise, loop backwards through the string making every character 0 until a 0 is reached
+        int idx = 31;
+        while (num[idx] != '0' & idx >= 0) {
+            num[idx--] = '0';
+        }
+        num[idx] = '1'; // Make the 0 a 1 for the carry
+    }
 }
 
 // Function #6
-void to_twos_complement(int32_t num, char *out) {}
+void to_twos_complement(int32_t num, char *out) {
+    if (num >= 0) { // If num is positive, convert to binary normally
+        for (int i = 31; i >= 0; i--) {
+            out[31-i] = ((num >> i) & 1) ? '1' : '0';
+        }
+    }
+}
 
 #endif

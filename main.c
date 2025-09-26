@@ -10,6 +10,7 @@ void oct_to_hex(const char *oct, char *out);
 void hex_to_bin(const char *hex, char *out);
 void to_sign_magnitude(int32_t num, char *out);
 void to_ones_complement(int32_t num, char *out);
+void add1_32bit_binary (char *num);
 
 // made a test change
 
@@ -17,6 +18,8 @@ int main(void) {
     char octIn[] = "7\0";
     char hexIn[] = "a3\0";
     int num = -255;
+
+    char int32[] = "01111111111111111111111111111111\0";
 
     char binOut[256];
     char binOut2[256];
@@ -38,6 +41,10 @@ int main(void) {
 
     to_ones_complement(num, oneCompOut);
     printf("Entered %d for int to one's complement conversion and got %s\n", num, oneCompOut);
+
+    printf("Entered %s, ", int32);
+    add1_32bit_binary(int32);
+    printf("added 1, and got %s\n", int32);
 
     return 0;
 }
