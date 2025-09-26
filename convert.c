@@ -29,7 +29,7 @@ void oct_to_bin(const char *oct, char *out) {
 
 // ================ Helper Functions for Function 2 ================
 
-// Function #2.5 (Reminds me of coding in VHDL)
+// Lookup table for converting a binary nibble to hexadecimal
 char bin4_lookup(const char *bin) {
     if      (strcmp(bin, "0000") == 0) return '0';
     else if (strcmp(bin, "0001") == 0) return '1';
@@ -104,7 +104,27 @@ void oct_to_hex(const char *oct, char *out) {
 }
 
 // Function #3
-void hex_to_bin(const char *hex, char *out) {}
+void hex_to_bin(const char *hex, char *out) {
+    // Handle edge case
+    if (strcmp(hex, "0") == 0) {
+        out[0] = '0';
+        out[1] = '\0';
+        return;
+    }
+
+    const char* hexLookup[] = { // Lookup table to convert hex digit directly to binary
+        "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111",
+        "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"
+    };
+    int digit;      // Int to store hex digit converted to base 10. Digit will be used to index hexLookup
+    out[0] = '\0';  // Set the first character of the output to the null operator. Allows strcat to acknowledge out as a string
+
+    // Loop through every character in hex
+    for (int i = 0; hex[i] != '\0'; i++) {
+        digit = hex[i] - '0';           // Convert the current digit to an int
+        strcat(out, hexLookup[digit]);  // Use digit to index hexLookup and append the string to the back of out
+    }
+}
 
 // Function #4
 void to_sign_magnitude(int num, char *out) {}
