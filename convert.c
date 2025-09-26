@@ -188,6 +188,14 @@ void to_twos_complement(int32_t num, char *out) {
         for (int i = 31; i >= 0; i--) {
             out[31-i] = ((num >> i) & 1) ? '1' : '0';
         }
+        out[32] = '\0'; // Null terminate the string
+    } else { // If num is negative, make positive, convert to inverted binary, then add 1 to make 2's complemment
+        int32_t absNum = abs(num);
+        for (int i = 31; i >= 0; i--) {
+            out[31-i] = ((absNum >> i) & 1) ? '0' : '1';
+        }
+        out[32] = '\0'; // Null terminate the string
+        add1_32bit_binary(out);
     }
 }
 
