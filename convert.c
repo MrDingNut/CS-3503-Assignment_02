@@ -29,7 +29,7 @@ void oct_to_bin(const char *oct, char *out) {
     }
 }
 
-// ================ Helper Functions for Function 2 ================
+// ================ Start of Helper Functions for Function 2 ================
 
 // Lookup table for converting a binary nibble to hexadecimal
 char bin4_lookup(const char *bin) {
@@ -70,6 +70,8 @@ void append_char(char *str, char c) {
     str[length] = c;           // Put character at the end
     str[length + 1] = '\0';    // Terminate the string
 }
+
+// ================ End of Helper Functions for Function 2 ================
 
 // Function #2
 void oct_to_hex(const char *oct, char *out) {
@@ -134,8 +136,8 @@ void hex_to_bin(const char *hex, char *out) {
     }
 }
 
-// Function #4.5
-void to_32bit_binary(uint32_t num, char *out) {
+// Function #4.5 Helper function for function 4
+void to_32bit_binary(const uint32_t num, char *out) {
     for (int i = 31; i >= 0; i--) { // Convert to 32 bit binary
         out[31-i] = ((num >> i) & 1) ? '1' : '0';
     }
@@ -144,7 +146,7 @@ void to_32bit_binary(uint32_t num, char *out) {
 }
 
 // Function #4
-void to_sign_magnitude(int32_t num, char *out) {
+void to_sign_magnitude(const int32_t num, char *out) {
     if (num >= 0) { // If num is positive, convert to binary normally
         to_32bit_binary(num, out);
     } else { // If num is negative, make positive then convert to binary normally
@@ -154,7 +156,7 @@ void to_sign_magnitude(int32_t num, char *out) {
 }
 
 // Function #5
-void to_ones_complement(int32_t num, char *out) {
+void to_ones_complement(const int32_t num, char *out) {
     if (num >= 0) { // If num is positive, convert to binary normally
         for (int i = 31; i >= 0; i--) {
             out[31-i] = ((num >> i) & 1) ? '1' : '0';
@@ -183,7 +185,7 @@ void add1_32bit_binary (char *num) {
 }
 
 // Function #6
-void to_twos_complement(int32_t num, char *out) {
+void to_twos_complement(const int32_t num, char *out) {
     if (num >= 0) { // If num is positive, convert to binary normally
         for (int i = 31; i >= 0; i--) {
             out[31-i] = ((num >> i) & 1) ? '1' : '0';
