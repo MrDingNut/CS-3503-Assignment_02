@@ -9,18 +9,20 @@ void oct_to_bin(const char *oct, char *out);
 void oct_to_hex(const char *oct, char *out);
 void hex_to_bin(const char *hex, char *out);
 void to_sign_magnitude(int32_t num, char *out);
+void to_ones_complement(int32_t num, char *out);
 
 // made a test change
 
 int main(void) {
     char octIn[] = "7\0";
     char hexIn[] = "a3\0";
-    int num = 0;
+    int num = -255;
 
     char binOut[256];
     char binOut2[256];
     char hexOut[256];
     char signMagOut[33];
+    char oneCompOut[33];
 
     oct_to_bin(octIn, binOut);
     printf("Entered %s for oct to bin conversion and got %s\n", octIn, binOut);
@@ -32,7 +34,10 @@ int main(void) {
     printf("Entered %s for hex to bin conversion and got %s\n", hexIn, binOut2);
 
     to_sign_magnitude(num, signMagOut);
-    printf("Entered %d for hex to bin conversion and got %s\n", num, signMagOut);
+    printf("Entered %d for int to sign mag conversion and got %s\n", num, signMagOut);
+
+    to_ones_complement(num, oneCompOut);
+    printf("Entered %d for int to one's complement conversion and got %s\n", num, oneCompOut);
 
     return 0;
 }

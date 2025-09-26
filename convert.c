@@ -153,9 +153,22 @@ void to_sign_magnitude(int32_t num, char *out) {
 }
 
 // Function #5
-void to_ones_complement(int num, char *out) {}
+void to_ones_complement(int32_t num, char *out) {
+    if (num >= 0) { // If num is positive, convert to binary normally
+        for (int i = 31; i >= 0; i--) {
+            out[31-i] = ((num >> i) & 1) ? '1' : '0';
+        }
+    } else { // If num is negative, convert to inverted binary
+        int32_t absNum = abs(num);
+        for (int i = 31; i >= 0; i--) {
+            out[31-i] = ((absNum >> i) & 1) ? '0' : '1';
+        }
+    }
+
+    out[32] = '\0';
+}
 
 // Function #6
-void to_twos_complement(int num, char *out) {}
+void to_twos_complement(int32_t num, char *out) {}
 
 #endif
