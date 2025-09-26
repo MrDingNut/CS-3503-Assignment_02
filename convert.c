@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <ctype.h>
 
 // Function #1
 void oct_to_bin(const char *oct, char *out) {
@@ -121,7 +122,13 @@ void hex_to_bin(const char *hex, char *out) {
 
     // Loop through every character in hex
     for (int i = 0; hex[i] != '\0'; i++) {
-        digit = hex[i] - '0';           // Convert the current digit to an int
+        // Convert the current digit to an int
+        if ((hex[i] - '0') < 10) {
+            digit   = hex[i] - '0';
+        } else {
+            digit   = toupper(hex[i]) - 'A' + 10; // toupper() forces the current character to be upper case
+        }
+
         strcat(out, hexLookup[digit]);  // Use digit to index hexLookup and append the string to the back of out
     }
 }

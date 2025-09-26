@@ -12,20 +12,23 @@ void hex_to_bin(const char *hex, char *out);
 // made a test change
 int main(void) {
     char octIn[] = "7\0";
-    char hexIn[] = "A3\0";
+    char hexIn[] = "a3\0";
 
     char binOut[256];
     char binOut2[256];
     char hexOut[256];
 
     oct_to_bin(octIn, binOut);
-    oct_to_hex(octIn, hexOut);
-    hex_to_bin(hexIn, binOut2);
-
     printf("Entered %s for oct to bin conversion and got %s\n", octIn, binOut);
-    printf("Entered %s for oct to hex conversion and got %s", octIn, hexOut);
-    printf("Entered %s for hex to bin conversion and got %s", hexIn, binOut2);
 
+    oct_to_hex(octIn, hexOut);
+    printf("Entered %s for oct to hex conversion and got %s\n", octIn, hexOut);
+
+    hex_to_bin(hexIn, binOut2);
+    printf("Entered %s for hex to bin conversion and got %s\n", hexIn, binOut2);
+
+    return 0;
+}
     /*
     FILE *file = fopen("a1_test_file.txt", "r");    // File object containing tests
     if (file == NULL) { // Verifies the file can be opened
@@ -122,5 +125,3 @@ int main(void) {
     */
 
 
-    return 0;
-}
