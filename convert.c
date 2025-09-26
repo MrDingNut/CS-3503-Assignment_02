@@ -4,6 +4,7 @@
 #define CONVERT_C
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <ctype.h>
@@ -126,15 +127,30 @@ void hex_to_bin(const char *hex, char *out) {
         if ((hex[i] - '0') < 10) {
             digit   = hex[i] - '0';
         } else {
-            digit   = toupper(hex[i]) - 'A' + 10; // toupper() forces the current character to be upper case
+            digit   = toupper(hex[i]) - 'A' + 10; // toupper() forces the current character to be upper case. Allows the input to be case independent
         }
 
         strcat(out, hexLookup[digit]);  // Use digit to index hexLookup and append the string to the back of out
     }
 }
 
+// Function #4.5
+void to_32bit_binary(uint32_t num, char *out) {
+    for (int i = 31; i >= 0; i--) {
+        out[31-i] = ((num >> i) & 1) ? '1' : '0';
+    }
+    out[32] = '\0';
+}
+
 // Function #4
-void to_sign_magnitude(int num, char *out) {}
+void to_sign_magnitude(int32_t num, char *out) {
+    if (num > 0) {
+        to_32bit_binary(num, out);
+    } else {
+        to_32bit_binary(abs(num), out);
+        out[0] = 1;
+    }
+}
 
 // Function #5
 void to_ones_complement(int num, char *out) {}
