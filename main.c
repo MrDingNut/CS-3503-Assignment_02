@@ -11,6 +11,21 @@ void print_tables (uint32_t n);
 
 
 int main(void) {
+    void oct_to_bin(const char *oct, char *out);
+    void oct_to_hex(const char *oct, char *out);
+
+    char octIn[] = "57\0";
+
+    char binOut[256];
+    char hexOut[256];
+
+    oct_to_bin(octIn, binOut);
+    oct_to_hex(octIn, hexOut);
+
+    printf("Entered %s for oct to bin conversion and got %s\n", octIn, binOut);
+    printf("Entered %s for oct to hex conversion and got %s", octIn, hexOut);
+
+    /*
     FILE *file = fopen("a1_test_file.txt", "r");    // File object containing tests
     if (file == NULL) { // Verifies the file can be opened
         perror("Error opening file\n");
@@ -103,5 +118,8 @@ int main(void) {
 
     fclose(file);   // Closes the file object
     printf("Summary: %d/%d tests passed", successCount, testCount); // Prints the overall testing results
+    */
+
+
     return 0;
 }
