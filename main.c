@@ -8,15 +8,19 @@
 void oct_to_bin(const char *oct, char *out);
 void oct_to_hex(const char *oct, char *out);
 void hex_to_bin(const char *hex, char *out);
+void to_sign_magnitude(int32_t num, char *out);
 
 // made a test change
+
 int main(void) {
     char octIn[] = "7\0";
     char hexIn[] = "a3\0";
+    int num = 0;
 
     char binOut[256];
     char binOut2[256];
     char hexOut[256];
+    char signMagOut[33];
 
     oct_to_bin(octIn, binOut);
     printf("Entered %s for oct to bin conversion and got %s\n", octIn, binOut);
@@ -27,9 +31,13 @@ int main(void) {
     hex_to_bin(hexIn, binOut2);
     printf("Entered %s for hex to bin conversion and got %s\n", hexIn, binOut2);
 
+    to_sign_magnitude(num, signMagOut);
+    printf("Entered %d for hex to bin conversion and got %s\n", num, signMagOut);
+
     return 0;
 }
-    /*
+
+/*
     FILE *file = fopen("a1_test_file.txt", "r");    // File object containing tests
     if (file == NULL) { // Verifies the file can be opened
         perror("Error opening file\n");
@@ -123,5 +131,3 @@ int main(void) {
     fclose(file);   // Closes the file object
     printf("Summary: %d/%d tests passed", successCount, testCount); // Prints the overall testing results
     */
-
-

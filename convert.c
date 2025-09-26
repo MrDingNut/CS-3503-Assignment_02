@@ -144,11 +144,11 @@ void to_32bit_binary(uint32_t num, char *out) {
 
 // Function #4
 void to_sign_magnitude(int32_t num, char *out) {
-    if (num > 0) {
+    if (num >= 0) {
         to_32bit_binary(num, out);
     } else {
         to_32bit_binary(abs(num), out);
-        out[0] = 1;
+        out[0] = '1';
     }
 }
 
