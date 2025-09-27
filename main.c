@@ -12,45 +12,8 @@ void to_sign_magnitude(int32_t num, char *out);
 void to_ones_complement(int32_t num, char *out);
 void to_twos_complement(int32_t num, char *out);
 
-// made a test change
-
 int main(void) {
-    char octIn[] = "7\0";
-    char hexIn[] = "a3\0";
-    int num = 5;
-
-    char int32[] = "01111111111111111111111111111111\0";
-
-    char binOut[256];
-    char binOut2[256];
-    char hexOut[256];
-    char signMagOut[33];
-    char oneCompOut[33];
-    char twoCompOut[33];
-
-    oct_to_bin(octIn, binOut);
-    printf("Entered %s for oct to bin conversion and got %s\n", octIn, binOut);
-
-    oct_to_hex(octIn, hexOut);
-    printf("Entered %s for oct to hex conversion and got %s\n", octIn, hexOut);
-
-    hex_to_bin(hexIn, binOut2);
-    printf("Entered %s for hex to bin conversion and got %s\n", hexIn, binOut2);
-
-    to_sign_magnitude(num, signMagOut);
-    printf("Entered %d for int to sign mag conversion and got %s\n", num, signMagOut);
-
-    to_ones_complement(num, oneCompOut);
-    printf("Entered %d for int to one's complement conversion and got %s\n", num, oneCompOut);
-
-    to_twos_complement(num, twoCompOut);
-    printf("Entered %d for int to two's complement conversion and got %s\n", num, twoCompOut);
-
-    return 0;
-}
-
-/*
-    FILE *file = fopen("a1_test_file.txt", "r");    // File object containing tests
+    FILE *file = fopen("a2_test.txt", "r");    // File object containing tests
     if (file == NULL) { // Verifies the file can be opened
         perror("Error opening file\n");
         return 1;
@@ -60,9 +23,7 @@ int main(void) {
     char line[256];         // Buffer/string to read each line from the test file
     char *command;          // Pointer pointing to the command from the buffer
     char *input1_str;       // Pointer pointing to the first input from the buffer
-    char *input2_str;       // Pointer pointing to the second input from the buffer
     int input1_int;         // Int to store converted input 1
-    int input2_int;         // Int to store converted input 2
     char *expectedOutput;   // Pointer pointing to the expected output from the buffer
     char output[256];       // String to contain the actual output from the tests
     int successCount = 0;   // Counter to track the number of successful tests
@@ -77,69 +38,49 @@ int main(void) {
 
         testCount++;    // Increment the test counter
         command = strtok(line, " \t\r\n");  // Read the command from the buffer
-        if (strcmp(command, "div_convert") == 0) {  // Fires if the command is "div"Convert"
-            // Read inputs and expected output
-            input1_str = strtok(NULL, " \t\r\n");
-            input2_str = strtok(NULL, " \t\r\n");
-            expectedOutput = strtok(NULL, " \t\r\n");
 
+        // Read input and expected output
+        input1_str = strtok(NULL, " \t\r\n");
+        expectedOutput = strtok(NULL, " \t\r\n");
+
+        // Run appropriate function
+        if (strcmp(command, "oct_to_bin") == 0) {  // Fires if the command is "div"Convert"
+            oct_to_bin(input1_str, output);
+        } else if (strcmp(command, "oct_to_hex") == 0) {
+            oct_to_hex(input1_str, output);
+        } else if (strcmp(command, "hex_to_bin") == 0) {
+            hex_to_bin(input1_str, output);
+        } else if (strcmp(command, "to_sign_magnitude") == 0) {
             // Converts inputs to integers
             input1_int = atoi(input1_str);
-            input2_int = atoi(input2_str);
-
-            // Run appropriate function
-            div_convert (input1_int, input2_int, output);
-
-            // Check results
-            if (strcmp(expectedOutput, output) == 0) {
-                result = "PASS\0";
-                successCount++;
-            } else {
-                result = "FAIL\0";
-            }
-
-            // Outputs the test results
-            printf("Test %d: %s(%d, %d) -> Expected: \"%s\", Got: \"%s\" [%s]\n", testCount, command, input1_int, input2_int, expectedOutput, output, result);
-
-        } else if (strcmp(command, "sub_convert") == 0) {
-            // Read inputs and expected output
-            input1_str = strtok(NULL, " \t\r\n");
-            input2_str = strtok(NULL, " \t\r\n");
-            expectedOutput = strtok(NULL, " \t\r\n");
-
+            to_sign_magnitude(input1_int, output);
+        } else if (strcmp(command, "to_ones_complement") == 0) {
             // Converts inputs to integers
             input1_int = atoi(input1_str);
-            input2_int = atoi(input2_str);
-
-            // Run appropriate function
-            sub_convert (input1_int, input2_int, output);
-
-            // Check results
-            if (strcmp(expectedOutput, output) == 0) {
-                result = "PASS\0";
-                successCount++;
-            } else {
-                result = "FAIL\0";
-            }
-
-            // Outputs the test results
-            printf("Test %d: %s(%d, %d) -> Expected: \"%s\", Got: \"%s\" [%s]\n", testCount, command, input1_int, input2_int, expectedOutput, output, result);
-
-        } else if (strcmp(command, "print_tables") == 0) {
-            // printf("Printing tables\n");
-            input1_str = strtok(NULL, " \t\r\n");
+            to_ones_complement(input1_int, output);
+        } else if (strcmp(command, "to_twos_complement") == 0) {
+            // Converts inputs to integers
             input1_int = atoi(input1_str);
-
-            // Runs the appropriate test
-            print_tables (input1_int);
-            // successCount++; // I thought about assuming the formatting was correct but didn't think that would be fair/honest
-            result = "UNKNOWN\0";   // Sets the result to UNKNOWN becuase I wasn't sure how to verify the formatting of a print statement
-
-            // Outputs the test results
-            printf("Test %d: %s(%d) -> [FORMATTED OUTPUT CHECK] [%s]\n", testCount, command, input1_int, result);
+            to_twos_complement(input1_int, output);
+        } else {
+            printf("Unknown command: %s\n", command);
+            output[0] = '0'; output[1] = '\0'; // Set the output such that result will be FAIL
         }
+
+        // Check results
+        if (strcmp(expectedOutput, output) == 0) {
+            result = "PASS\0";
+            successCount++;
+        } else {
+            result = "FAIL\0";
+        }
+
+        // Outputs the test results
+        printf("Test %d: %s(%s, output) -> Expected: \"%s\", Got: \"%s\" [%s]\n", testCount, command, input1_str, expectedOutput, output, result);
     }
 
     fclose(file);   // Closes the file object
     printf("Summary: %d/%d tests passed", successCount, testCount); // Prints the overall testing results
-    */
+
+    return 0;
+}
