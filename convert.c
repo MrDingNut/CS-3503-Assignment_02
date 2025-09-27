@@ -11,16 +11,15 @@
 
 // Function #1
 void oct_to_bin(const char *oct, char *out) {
-    // Handle edge case
-    if (strcmp(oct, "0") == 0) {
-        out[0] = '0';
-        out[1] = '\0';
-        return;
-    }
-
     const char* octLookup[] = {"000", "001", "010", "011", "100", "101", "110", "111"}; // Lookup table to convert octal digit directly to binary
     int digit;      // Will store octal digit converted to base 10. Digit will be used to index octLookup
     out[0] = '\0';  // Set the first character of the output to the null operator. Allows strcat to acknowledge out as a string
+
+    // Handle edge case
+    if (strcmp(oct, "0") == 0) {
+        strcat(out, octLookup[0]);
+        return;
+    }
 
     // Loop through every character in oct
     for (int i = 0; oct[i] != '\0'; i++) {
@@ -31,7 +30,7 @@ void oct_to_bin(const char *oct, char *out) {
 
 // ================ Start of Helper Functions for Function 2 ================
 
-// Lookup table for converting a binary nibble to hexadecimal
+// Function 2.1 - Lookup table for converting a binary nibble to hexadecimal
 char bin4_lookup(const char *bin) {
     if      (strcmp(bin, "0000") == 0) return '0';
     else if (strcmp(bin, "0001") == 0) return '1';
@@ -52,7 +51,7 @@ char bin4_lookup(const char *bin) {
     return 'Q'; // Handle invalid case
 }
 
-// Function #2.5.5 (Assumes character array has enough extra allocated space to include the new character)
+// Function #2.2 (Assumes character array has enough extra allocated space to include the new character)
 void prepend_char(char* str, char c) {
     int length = strlen(str);
 
@@ -64,25 +63,42 @@ void prepend_char(char* str, char c) {
     str[0] = c; // Insert new character
 }
 
-// Function 2.5.5.5
+// Function 2.3
 void append_char(char *str, char c) {
     int length = strlen(str);  // Find the length of the string
     str[length] = c;           // Put character at the end
     str[length + 1] = '\0';    // Terminate the string
 }
 
+// Function 2.4
+void remove_first_char(char *str) {
+    int length = strlen(str);
+
+    // Shift every character one to the left
+    for (int i = 0; i < length; i++) {
+        str[i] = str[i+1];
+    }
+}
+
 // ================ End of Helper Functions for Function 2 ================
 
 // Function #2
 void oct_to_hex(const char *oct, char *out) {
+    // Handle edge case
+    if (strcmp(oct, "0") == 0) {
+        out[0] = '0';
+        out[1] = '\0';
+        return;
+    }
+
     char bin[256];
     oct_to_bin(oct, bin);       // Convert oct to binary
 
     int len = (int)strlen(bin); // Find the length of bin (casting to an int to make CLion stop yelling at me)
-    int buff = len % 4;         // The number of '0' to prepend to bin to make the length of min a multiple of 4
+    int buff = 4 - (len % 4);         // The number of '0' to prepend to bin to make the length of min a multiple of 4
 
     // Prepend the necessary number of '0's to bin
-    for (int i = 0; i < (4-buff); i++) {
+    for (int i = 0; i < buff; i++) {
         prepend_char(bin, '0');
     }
 
@@ -105,23 +121,27 @@ void oct_to_hex(const char *oct, char *out) {
         char c = bin4_lookup(nibble);
         append_char(out, c);
     }
+
+    // Removes any leading 0's
+    while (out[0] == '0') {
+        remove_first_char(out);
+    }
 }
 
 // Function #3
 void hex_to_bin(const char *hex, char *out) {
-    // Handle edge case
-    if (strcmp(hex, "0") == 0) {
-        out[0] = '0';
-        out[1] = '\0';
-        return;
-    }
-
     const char* hexLookup[] = { // Lookup table to convert hex digit directly to binary
         "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111",
         "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"
     };
-    int digit;      // Int to store hex digit converted to base 10. Digit will be used to index hexLookup
     out[0] = '\0';  // Set the first character of the output to the null operator. Allows strcat to acknowledge out as a string
+    int digit;      // Int to store hex digit converted to base 10. Digit will be used to index hexLookup
+
+    // Handle edge case
+    if (strcmp(hex, "0") == 0) {
+        strcat(out, hexLookup[0]);
+        return;
+    }
 
     // Loop through every character in hex
     for (int i = 0; hex[i] != '\0'; i++) {
@@ -131,7 +151,6 @@ void hex_to_bin(const char *hex, char *out) {
         } else {
             digit   = toupper(hex[i]) - 'A' + 10; // toupper() forces the current character to be upper case. Allows the input to be case independent
         }
-
         strcat(out, hexLookup[digit]);  // Use digit to index hexLookup and append the string to the back of out
     }
 }
