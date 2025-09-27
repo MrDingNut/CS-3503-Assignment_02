@@ -13,9 +13,11 @@ My implementation of firect mapping between number systems and signed number rep
 
 ## Build Instructions
 '''bash
+
 gcc main.c convert.c -o assignment2
 
 ./assignment2
+
 '''
 
 ## Test Results
